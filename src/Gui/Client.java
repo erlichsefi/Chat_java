@@ -232,8 +232,8 @@ public class Client extends javax.swing.JFrame {
 	}//GEN-LAST:event_jCheckBox1ActionPerformed
 
 	private void Clear(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Clear
-		// TODO add your handling code here:
-	}//GEN-LAST:event_Clear
+		jTextArea1.setText("");
+		}//GEN-LAST:event_Clear
 
 	private void SHOWONLINE(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SHOWONLINE
 		client_f.SendshowOnline();
