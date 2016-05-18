@@ -365,9 +365,11 @@ public class ServerCommunicationTools {
 				name=((message)inputStream.readObject()).getSrc();
 				if (!clientlist.contains(name)){
 					outputStream.writeObject(new message(name,null,Tools.MessageType.OK,null));
+					outputStream.flush();
 					outputStream.writeObject(ClientId);
 				}else{
 					outputStream.writeObject(new message(name,null,Tools.MessageType.NameTaken,null));
+					outputStream.flush();
 					disconnect();
 					return false;
 				}
@@ -438,7 +440,6 @@ public class ServerCommunicationTools {
 			try {
 				ControlOnWriteToStream.acquire();
 				outputStream.writeObject(m);
-				outputStream.flush();
 				ControlOnWriteToStream.release();
 				return true;
 			} catch (IOException e) {

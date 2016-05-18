@@ -156,6 +156,7 @@ public class ClientCommunicationTools  {
 			outputStream = new ObjectOutputStream(connection.getOutputStream());
 			inputStream = new ObjectInputStream(connection.getInputStream());
 			outputStream.writeObject(new message(MyName,null,Tools.MessageType.LETS_CONNECT,null));
+			outputStream.flush();
 			message c=(message)inputStream.readObject();
 			if (c.getType()==Tools.MessageType.OK){
 				MyId = (Integer) inputStream.readObject();
@@ -191,7 +192,6 @@ public class ClientCommunicationTools  {
 		try {
 			ControlOnWriteToStream.acquire();
 			outputStream.writeObject(m);
-			outputStream.flush();
 			ControlOnWriteToStream.release();
 			return true;
 		} catch (IOException e) {
@@ -213,6 +213,7 @@ public class ClientCommunicationTools  {
 	public boolean SendClose() {
 		try {
 			outputStream.writeObject(new message(MyName,null,Tools.MessageType.LETS_DISCONNECT,null));
+			outputStream.flush();
 			return true;
 		} catch (IOException e) {
 			System.err.println(e.getStackTrace());
