@@ -52,6 +52,10 @@ public static final int RELERSE = 11;
  * the name ois taken
  */
 public static final int NameTaken = 9;
+/**
+ * OK message
+ */
+public static final int OK = 12;
 
 
 }

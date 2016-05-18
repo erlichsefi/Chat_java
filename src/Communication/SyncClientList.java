@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
+import Communication.ServerCommunicationTools.ClientSocket;
 import Server_Threads.ListeningThread;
 
 /**
@@ -39,7 +40,7 @@ public class SyncClientList {
 	 * 
 	 */
 	public SyncClientList(){
-		Clients=new HashMap<String,ServerCommunicationTools.ClientSocket>();
+		Clients=new HashMap<String,ServerCommunicationTools.ClientSocket>(100);
 		ListeningThreads=new HashMap<String,ListeningThread>();
 		ClientListMutext = new Semaphore(1, true);
 		OldClientListEvent=new Semaphore(0, true);
@@ -56,6 +57,7 @@ public class SyncClientList {
 	public ServerCommunicationTools.ClientSocket findClient(String name) {
 		Down();
 		ServerCommunicationTools.ClientSocket ans = Clients.get(name);
+	
 		Up();
 		return ans;
 	}
@@ -68,9 +70,10 @@ public class SyncClientList {
 	public ArrayList<String> GetClientList() {
 		Down();
 		ArrayList<String> ans = new ArrayList<String>();
-		for (int i = 0; i < Clients.size(); i++) {
-			if (Clients.get(i).isConnected())
-				ans.add(Clients.get(i).getClientName());
+		for (String key : Clients.keySet()) {
+			ClientSocket client=Clients.get(key);
+			if (client.isConnected())
+				ans.add(client.getClientName());
 		}
 		Up();
 		return ans;

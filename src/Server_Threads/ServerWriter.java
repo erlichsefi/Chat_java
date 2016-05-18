@@ -42,6 +42,7 @@ public class ServerWriter extends Thread {
 				break;
 			}
 			ServerCommunicationTools.ClientSocket client = Clients.findClient(m.getDst());
+			
 			client.SendMassage(m);
 
 		}

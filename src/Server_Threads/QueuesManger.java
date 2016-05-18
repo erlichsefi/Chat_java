@@ -57,13 +57,13 @@ public class QueuesManger extends Thread{
 				
 		}
 		else if(m1==Tools.MessageType.TO_ONE){
-			if (Clients.findClient(m.getSrc())!=null)
+			if (Clients.findClient(m.getDst())!=null)
 			Communication.putExit(new message(m.getSrc(),m.getDst(),Tools.MessageType.TO_ONE,m.getStringMessage()));
 			else
 				Communication.putExit(new message("server",m.getSrc(),Tools.MessageType.NO_SUCH_CLIENT,m.getDst()));
 		}
 		else if(m1==Tools.MessageType.TO_ALL){
-			sendToall(new message(m.getSrc(),null,Tools.MessageType.TO_ALL,m.getStringMessage()));
+			sendToall(new message(m.getSrc(),null,Tools.MessageType.TO_ALL,m.getSrc()+" : "+m.getStringMessage()));
 		}
 		else if(m1==Tools.MessageType.LETS_DISCONNECT){
 			Communication.AddLog(m.getSrc()+" disconnected");

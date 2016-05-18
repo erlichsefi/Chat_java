@@ -157,7 +157,7 @@ public class ClientCommunicationTools  {
 			inputStream = new ObjectInputStream(connection.getInputStream());
 			outputStream.writeObject(new message(MyName,null,Tools.MessageType.LETS_CONNECT,null));
 			message c=(message)inputStream.readObject();
-			if (c.getType()==Tools.MessageType.YOU_HAVE_CONNECTED){
+			if (c.getType()==Tools.MessageType.OK){
 				MyId = (Integer) inputStream.readObject();
 				MyName=name;
 				return true;

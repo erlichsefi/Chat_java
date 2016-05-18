@@ -4,6 +4,7 @@ package Server_Threads;
 import Communication.ServerCommunicationTools;
 import Communication.SyncClientList;
 import Communication.ServerCommunicationTools.ClientSocket;
+import Tools.message;
 
 /**
  * this thread responsible of connecting new client
@@ -52,6 +53,7 @@ public class connectNewClient extends Thread {
 			if (Client.OpenStream(Clients.GetClientList())) {
 				ListeningThread listen=new ListeningThread(Client,Clients);
 				listen.start();
+				communicationManger.putExit(new message("SERVER",Client.getClientName(),Tools.MessageType.YOU_HAVE_CONNECTED,null));
 				Clients.addClient(Client,listen);
 				communicationManger.AddLog(Client.getClientName()+" connected");
 			}

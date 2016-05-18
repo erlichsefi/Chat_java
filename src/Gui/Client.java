@@ -6,6 +6,9 @@
 package Gui;
 
 import Client_Threads.ClientManger;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.GroupLayout;
 
 /**
  *
@@ -35,31 +38,31 @@ public class Client extends javax.swing.JFrame {
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
-		jToggleButton1 = new javax.swing.JToggleButton();
+		jToggleButton_connect = new javax.swing.JToggleButton();
 		my_name = new javax.swing.JTextField();
-		jLabel1 = new javax.swing.JLabel();
-		jLabel2 = new javax.swing.JLabel();
+		jLabel_name = new javax.swing.JLabel();
+		jLabel_address = new javax.swing.JLabel();
 		ip_ad = new javax.swing.JTextField();
-		jToggleButton2 = new javax.swing.JToggleButton();
-		jToggleButton3 = new javax.swing.JToggleButton();
-		jCheckBox1 = new javax.swing.JCheckBox();
+		jToggleButton_showOnline = new javax.swing.JToggleButton();
+		jToggleButton_clear = new javax.swing.JToggleButton();
+		jToggleButton_reset = new javax.swing.JToggleButton();
 		jScrollPane1 = new javax.swing.JScrollPane();
-		jTextArea1 = new javax.swing.JTextArea();
-		jLabel3 = new javax.swing.JLabel();
+		jTextArea_Main = new javax.swing.JTextArea("");
+		jLabel_To = new javax.swing.JLabel();
 		dst = new javax.swing.JTextField();
-		message_field = new javax.swing.JTextField();
-		jButton1 = new javax.swing.JButton();
-		jButton2 = new javax.swing.JButton();
+		message_field = new javax.swing.JTextField("");
+		jButton_send = new javax.swing.JButton();
+		jButton_disconnect = new javax.swing.JButton();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-		jToggleButton1.setText("Connect");
-		jToggleButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+		jToggleButton_connect.setText("Connect");
+		jToggleButton_connect.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseReleased(java.awt.event.MouseEvent evt) {
 				Connect(evt);
 			}
 		});
-		jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+		jToggleButton_connect.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jToggleButton1ActionPerformed(evt);
 			}
@@ -72,9 +75,9 @@ public class Client extends javax.swing.JFrame {
 			}
 		});
 
-		jLabel1.setText("name:");
+		jLabel_name.setText("name:");
 
-		jLabel2.setText("address:");
+		jLabel_address.setText("address:");
 
 		ip_ad.setText(Tools.mutual.DefaultServerIP);
 		ip_ad.addActionListener(new java.awt.event.ActionListener() {
@@ -83,43 +86,49 @@ public class Client extends javax.swing.JFrame {
 			}
 		});
 
-		jToggleButton2.setText("ShowOnline");
-		jToggleButton2.setEnabled(false);
-		jToggleButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+		jToggleButton_showOnline.setText("Show online users");
+		jToggleButton_showOnline.setEnabled(false);
+		jToggleButton_showOnline.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseReleased(java.awt.event.MouseEvent evt) {
 				SHOWONLINE(evt);
 			}
 		});
 
-		jToggleButton3.setText("Clear");
-		jToggleButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+		jToggleButton_clear.setText("Clear");
+		jToggleButton_clear.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseReleased(java.awt.event.MouseEvent evt) {
 				Clear(evt);
 			}
 		});
-		jToggleButton3.addActionListener(new java.awt.event.ActionListener() {
+		jToggleButton_clear.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jToggleButton3ActionPerformed(evt);
 			}
 		});
-
-		jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+		
+		jToggleButton_reset.setText("Reset");
+		jToggleButton_reset.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseReleased(java.awt.event.MouseEvent evt) {
+				Reset(evt);
+			}
+		});
+		jToggleButton_reset.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jCheckBox1ActionPerformed(evt);
+				jToggleButtonResetActionPerformed(evt);
 			}
 		});
 
-		jTextArea1.setColumns(20);
-		jTextArea1.setRows(5);
-		jScrollPane1.setViewportView(jTextArea1);
+		jTextArea_Main.setColumns(20);
+		jTextArea_Main.setRows(5);
+		jScrollPane1.setViewportView(jTextArea_Main);
 
-		jLabel3.setText("TO:");
+		jLabel_To.setText("TO:");
 
 		dst.setText("NAME");
 		dst.setEditable(false);
 		dst.setToolTipText("");
 
-		message_field.setText("jTextField4");
+		message_field.setText("");
 		message_field.setEditable(false);
 		message_field.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,86 +136,89 @@ public class Client extends javax.swing.JFrame {
 			}
 		});
 
-		jButton1.setText("Send");
-		jButton1.setEnabled(false);
-		jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+		jButton_send.setText("Send");
+		jButton_send.setEnabled(false);
+		jButton_send.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mousePressed(java.awt.event.MouseEvent evt) {
 				Send(evt);
 			}
 		});
 
-		jButton2.setText("Disconnect");
-		jButton2.setEnabled(false);
-		jButton2.setToolTipText("");
-		jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+		jButton_disconnect.setText("Disconnect");
+		jButton_disconnect.setEnabled(false);
+		jButton_disconnect.setToolTipText("");
+		jButton_disconnect.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mousePressed(java.awt.event.MouseEvent evt) {
 				Disconnect(evt);
 			}
 		});
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+			layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+					.addContainerGap()
+					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(jLabel_To)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(dst, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(message_field, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(jButton_send))
+						.addGroup(layout.createSequentialGroup()
+							.addGap(17)
+							.addGroup(layout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(layout.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(jLabel3)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(dst, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(message_field, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jButton1))
-								.addGroup(layout.createSequentialGroup()
-										.addGap(21, 21, 21)
-										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(jToggleButton1)))
-								.addGroup(layout.createSequentialGroup()
-										.addGap(19, 19, 19)
-										.addComponent(jButton2)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jLabel1)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(my_name, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jLabel2)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(ip_ad, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jToggleButton2)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jToggleButton3)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jCheckBox1)))
-						.addContainerGap(25, Short.MAX_VALUE))
-				);
+									.addComponent(jLabel_name)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(my_name, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(jLabel_address)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(ip_ad, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(jToggleButton_showOnline))
+								.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 459, GroupLayout.PREFERRED_SIZE)
+								.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+									.addComponent(jToggleButton_connect, GroupLayout.PREFERRED_SIZE, 123, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(jButton_disconnect, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(jToggleButton_reset, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(jToggleButton_clear, GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)))
+							.addGap(97)))
+					.addContainerGap())
+		);
 		layout.setVerticalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+			layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-						.addComponent(jToggleButton1)
-						.addGap(7, 7, 7)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(my_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel1)
-								.addComponent(jLabel2)
-								.addComponent(ip_ad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jToggleButton2)
-								.addComponent(jToggleButton3)
-								.addComponent(jCheckBox1)
-								.addComponent(jButton2))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel3)
-								.addComponent(dst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(message_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton1))
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-				);
+					.addContainerGap()
+					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jToggleButton_connect)
+						.addComponent(jButton_disconnect, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jToggleButton_reset)
+						.addComponent(jToggleButton_clear))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jToggleButton_showOnline)
+						.addComponent(jLabel_name)
+						.addComponent(my_name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jLabel_address)
+						.addComponent(ip_ad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jLabel_To)
+						.addComponent(dst, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(message_field, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jButton_send))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		getContentPane().setLayout(layout);
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
@@ -226,15 +238,18 @@ public class Client extends javax.swing.JFrame {
 	private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
 		// TODO add your handling code here:
 	}//GEN-LAST:event_jToggleButton3ActionPerformed
-
-	private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+	private void jToggleButtonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
 		// TODO add your handling code here:
-	}//GEN-LAST:event_jCheckBox1ActionPerformed
+	}//GEN-LAST:event_jToggleButton3ActionPerformed
 
 	private void Clear(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Clear
-		jTextArea1.setText("");
+		jTextArea_Main.setText("");
 		}//GEN-LAST:event_Clear
-
+	private void Reset(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Clear
+		dispose();
+		Client game = new Client();
+        game.setVisible(true);
+		}//GEN-LAST:event_Reset
 	private void SHOWONLINE(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SHOWONLINE
 		client_f.SendshowOnline();
 	}//GEN-LAST:event_SHOWONLINE
@@ -247,23 +262,23 @@ public class Client extends javax.swing.JFrame {
 				public void run(){
 					String d=client_f.getNextStringToConsole();
 					while(d!=null){
-						jTextArea1.append(d);
-						jTextArea1.append("\n");
+						jTextArea_Main.append(d);
+						jTextArea_Main.append("\n");
 						d=client_f.getNextStringToConsole();
 					}
 
 				}
 			};
 			th.start();
-			jToggleButton1.setEnabled(false);
+			jToggleButton_connect.setEnabled(false);
 
-			jButton2.setEnabled(true);
+			jButton_disconnect.setEnabled(true);
 			my_name.setEditable(false);
 			ip_ad.setEditable(false);
 			message_field.setEditable(true);
-			jButton1.setEnabled(true);
+			jButton_send.setEnabled(true);
 			dst.setEditable(true);
-			jToggleButton2.setEnabled(true);
+			jToggleButton_showOnline.setEnabled(true);
 		}
 
 
@@ -281,14 +296,14 @@ public class Client extends javax.swing.JFrame {
 
 	private void Disconnect(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Disconnect
 		client_f.dissconnect();
-		jToggleButton1.setEnabled(true);
-		jButton2.setEnabled(false);
+		jToggleButton_connect.setEnabled(true);
+		jButton_disconnect.setEnabled(false);
 		my_name.setEditable(true);
 		ip_ad.setEditable(true);
 		message_field.setEditable(false);
-		jButton1.setEnabled(false);
+		jButton_send.setEnabled(false);
 		dst.setEnabled(false);
-		jToggleButton2.setEnabled(false);
+		jToggleButton_showOnline.setEnabled(false);
 
 	}//GEN-LAST:event_Disconnect
 
@@ -334,17 +349,17 @@ public class Client extends javax.swing.JFrame {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JTextField dst;
 	private javax.swing.JTextField ip_ad;
-	private javax.swing.JButton jButton1;
-	private javax.swing.JButton jButton2;
-	private javax.swing.JCheckBox jCheckBox1;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel3;
+	private javax.swing.JButton jButton_send;
+	private javax.swing.JButton jButton_disconnect;
+	private javax.swing.JLabel jLabel_name;
+	private javax.swing.JLabel jLabel_address;
+	private javax.swing.JLabel jLabel_To;
 	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JTextArea jTextArea1;
-	private javax.swing.JToggleButton jToggleButton1;
-	private javax.swing.JToggleButton jToggleButton2;
-	private javax.swing.JToggleButton jToggleButton3;
+	private javax.swing.JTextArea jTextArea_Main;
+	private javax.swing.JToggleButton jToggleButton_connect;
+	private javax.swing.JToggleButton jToggleButton_showOnline;
+	private javax.swing.JToggleButton jToggleButton_clear;
+	private javax.swing.JToggleButton jToggleButton_reset;
 	private javax.swing.JTextField message_field;
 	private javax.swing.JTextField my_name;
 	// End of variables declaration//GEN-END:variables

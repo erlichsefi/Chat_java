@@ -364,7 +364,7 @@ public class ServerCommunicationTools {
 				inputStream = new ObjectInputStream(connection.getInputStream());
 				name=((message)inputStream.readObject()).getSrc();
 				if (!clientlist.contains(name)){
-					outputStream.writeObject(new message(name,null,Tools.MessageType.YOU_HAVE_CONNECTED,null));
+					outputStream.writeObject(new message(name,null,Tools.MessageType.OK,null));
 					outputStream.writeObject(ClientId);
 				}else{
 					outputStream.writeObject(new message(name,null,Tools.MessageType.NameTaken,null));
