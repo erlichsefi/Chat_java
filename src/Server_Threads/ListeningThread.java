@@ -27,7 +27,7 @@ public class ListeningThread extends Thread {
 	 */
 	public ListeningThread(ClientSocket client,SyncClientList cl) {
 		super("Server Thread for "+client.getClientName());
-		this.socket = client;
+		socket = client;
 		Clients=cl;
 	}
 
@@ -38,17 +38,24 @@ public class ListeningThread extends Thread {
 	 * and handling them in the right way 2. at the and of the thread disconnecting
 	 */
 	public void run() {
+		System.out.println(">listhring thread of "+socket.getClientName()+" started");
+
 		while (socket.getConnectionStatus()) {
+			
 			Object m = socket.ReadResponsed();
+			
 			if (!socket.getConnectionStatus()) break;
+			
 			if (m != null) {
+				System.out.println(">client socket "+socket.getClientName()+" GOT: "+m.toString());
 				socket.SetLastRead();
 				message s=(message)m;
 				socket.putEntry(s);
 			}
 		}
-		
-		Clients.addToOldClients(socket.getClientName());
+		System.out.println(">listhring thread of "+socket.getClientName()+" ended");
+
+		Clients.addToOldClients(socket.getClientId());
 	}
 
 	

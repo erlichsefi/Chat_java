@@ -1,6 +1,8 @@
 package Server_Threads;
 
 
+import java.net.Socket;
+
 import Communication.ServerCommunicationTools;
 import Communication.SyncClientList;
 import Communication.ServerCommunicationTools.ClientSocket;
@@ -36,29 +38,45 @@ public class connectNewClient extends Thread {
 		super("Connect New Clients");
 		Clients = clients2;
 		communicationManger=_communicationManger;
-
 	}
 
 	/**
 	 * run
 	 */
 	public void run() {
+		
 		communicationManger.AddLog(">>>started listing to new clients");
+		System.out.println(">>>started listing to new clients");
+		
 		while (communicationManger.getConnectionStatus()) {
-			ClientSocket Client = null;
-			Client = communicationManger.new ClientSocket(communicationManger.accept(),
-					ClientsIds++);
-			if (!communicationManger.getConnectionStatus())
+			Socket socket=communicationManger.accept();
+			
+			if (socket!=null){
+			
+				if (!communicationManger.getConnectionStatus())
 				break;
-			if (Client.OpenStream(Clients.GetClientList())) {
+			
+			 ClientSocket Client = communicationManger.new ClientSocket(socket,
+					ClientsIds++);
+
+  
+			 if (Client.OpenStream(Clients.GetClientList())) {
 				ListeningThread listen=new ListeningThread(Client,Clients);
 				listen.start();
 				communicationManger.putExit(new message("SERVER",Client.getClientName(),Tools.MessageType.YOU_HAVE_CONNECTED,null));
 				Clients.addClient(Client,listen);
 				communicationManger.AddLog(Client.getClientName()+" connected");
 			}
-
+			 else{
+				 Client.disconnect();
+			 }
+		
+			System.out.println("new client was add : "+Client.getClientName()+" with id "+Client.getClientId());
+			
 		}
+		}
+		
+		System.out.println(">>>Stoped listing to new clients");
 		communicationManger.AddLog(">>>Stoped listing to new clients");
 
 	}

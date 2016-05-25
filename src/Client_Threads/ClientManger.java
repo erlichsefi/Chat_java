@@ -1,5 +1,9 @@
 package Client_Threads;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.util.concurrent.Semaphore;
+
 import Communication.ClientCommunicationTools;
 import Tools.message;
 
@@ -14,6 +18,7 @@ public class ClientManger  {
 	 * the helping thread
 	 */
 	private ClientCommunicationTools communication;
+	private Semaphore connectMutex;
 
 
 	/**
@@ -40,7 +45,8 @@ public class ClientManger  {
 	 */
 	public ClientManger() {
 		Connected=false;
-		communication = new ClientCommunicationTools( );	
+		communication = new ClientCommunicationTools( );
+		connectMutex= new Semaphore(1,true);
 	}
 
 	/**
@@ -68,42 +74,62 @@ public class ClientManger  {
 	 * connect to a server(the default one), with name
 	 * @param name the name to connect with
 	 * @return true of connected
+	 * @throws IOException 
 	 */
-	public boolean connect(String name){
+	public boolean connect(String name) throws IOException {
+		boolean status=false;
 		communication = new ClientCommunicationTools();	
 		read=new ClientReader(communication);
 		write=new ClientWriter(communication);
+		try {
+			connectMutex.acquire();
 		if (Connected=communication.Connect(name)) {
 			Myname=name;
 			//send outgoing messages
 			write.start();
 			//reading messages
 			read.start();
-			return true;
+			status= true;
 		}
-		return false;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		finally{
+			connectMutex.release();
+		}
+		return status;
 	}
 	/**
 	 * connect to a server, with name
 	 * @param name the name to connect with
 	 * @param ip the ip the connect to
 	 * @return true of connected
+	 * @throws ConnectException 
 	 */
-	public boolean connect(String name,String ip){
+	public boolean connect(String name,String ip) throws IOException{
+		boolean status=false;
 		Tools.mutual.DefaultServerIP=ip;
 		communication = new ClientCommunicationTools();	
-		if (Connected=communication.Connect(name)) {
-			read=new ClientReader(communication);
-			write=new ClientWriter(communication);
-			communication.getClientID();
-			Myname=name;
-			//send outgoing messages
-			write.start();
-			//reading messages
-			read.start();
-			return true;
+		try {
+			connectMutex.acquire();
+			if (Connected=communication.Connect(name)) {
+				read=new ClientReader(communication);
+				write=new ClientWriter(communication);
+				communication.getClientID();
+				Myname=name;
+				//send outgoing messages
+				write.start();
+				//reading messages
+				read.start();
+				status= true;
+			}
+			} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		return false;
+		finally{
+			connectMutex.release();
+		}
+		return status;
 	}
 	/**
 	 * get log message, if there is no message-wait
@@ -121,21 +147,43 @@ public class ClientManger  {
 	 * @return true if add to the queue, false else
 	 */
 	public boolean SendshowOnline(){
+		boolean status=false;
+
+		try {
+			connectMutex.acquire();
+		
 		if (Connected){
 			communication.PutExit(new message(Myname,null,Tools.MessageType.GET_LIST,null));
-			return true;
+			status= true;
 		}
-		return false;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		finally{
+		connectMutex.release();
+		}
+		return status;
 	}
 	/**
 	 * send a message asking for disconnect 
 	 * @return true if add to the queue, false else
 	 */
 	public boolean dissconnect(){
+		boolean status=false;
+
+		try {
+			connectMutex.acquire();
+		
 		if (Connected){
-			communication.SendClose();
+			status=communication.SendClose();
 		}
-		return false;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		finally{
+		connectMutex.release();
+		}
+		return status;
 	}
 	/**
 	 * send a message the another client
@@ -162,6 +210,10 @@ public class ClientManger  {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean IsNotEmpty() {
+		return communication.IsNotEmpty();
 	}
 
 

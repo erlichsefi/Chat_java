@@ -36,11 +36,17 @@ public class removeOldclients extends Thread {
 	 */
 	public void run(){
 		Communication.AddLog(">>>>started listing to old clients");
-
+		System.out.println(">>>>started listing to old clients");
+		
 		//handle remove of old client
 		while (Communication.getConnectionStatus()){
-			Clients.RemoveOldClient();
+		
+			String removed=Clients.RemoveOldClient();
+			System.out.println(">>>>old clients thread removed "+removed);
+
 		}
+		
+		System.out.println(">>>>Stoped listing to old clients");
 		Communication.AddLog(">>>>Stoped listing to old clients");
 
 	}

@@ -33,11 +33,17 @@ public class QueuesManger extends Thread{
 	 * run
 	 */
 	public void run() {
+		System.out.println(">>queue manger started  ");
 		Communication.AddLog(">>start handling messages");
+		
 		while (Communication.getConnectionStatus()){
 			message m=Communication.TakeEntry();
+			System.out.println(">>queue manger GOT:  "+m);
+
 			ServerhandleM(m);
 		}
+		
+		System.out.println(">>queue manger ended ");
 		Communication.AddLog(">>stoped handleing messages");
 	}
 
@@ -71,7 +77,6 @@ public class QueuesManger extends Thread{
 			send(m.getSrc(),new message("server",m.getSrc(),Tools.MessageType.YOU_HAVE_DISCONNECTED,null));
 			disconnectClient(m.getSrc());
 		}
-		
 		else if(m1==Tools.MessageType.RELERSE){
 			System.out.println("a message to br relese the take");
 			System.out.println(Communication.getConnectionStatus());

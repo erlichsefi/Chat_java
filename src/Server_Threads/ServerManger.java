@@ -72,7 +72,7 @@ public class ServerManger {
 	 * connect
 	 */
 	public void connect(){
-		if (CommunicationManger.Connect()) {
+		if (CommunicationManger.ConnectServer()) {
 			NewClients.start();
 			OldClients.start();
 			//sending

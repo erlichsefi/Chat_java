@@ -25,7 +25,7 @@ public class SyncClientList {
 	/**
 	 * a list of clients to remove
 	 */
-	private ArrayList<String> Old_Client;
+	private ArrayList<Integer> Old_Client;
 	/**
 	 * Semaphore used  as mutex to control 
 	 * the changing of the client list
@@ -44,7 +44,7 @@ public class SyncClientList {
 		ListeningThreads=new HashMap<String,ListeningThread>();
 		ClientListMutext = new Semaphore(1, true);
 		OldClientListEvent=new Semaphore(0, true);
-		Old_Client=new ArrayList<String>(Tools.mutual.MaxNumberOfM);
+		Old_Client=new ArrayList<Integer>(Tools.mutual.MaxNumberOfM);
 	}
 
 	
@@ -57,7 +57,6 @@ public class SyncClientList {
 	public ServerCommunicationTools.ClientSocket findClient(String name) {
 		Down();
 		ServerCommunicationTools.ClientSocket ans = Clients.get(name);
-	
 		Up();
 		return ans;
 	}
@@ -74,7 +73,7 @@ public class SyncClientList {
 			ClientSocket client=Clients.get(key);
 			if (client.isConnected())
 				ans.add(client.getClientName());
-		}
+		}	
 		Up();
 		return ans;
 	}
@@ -85,11 +84,10 @@ public class SyncClientList {
 	 */
 	public void DisconnectAllClients() {
 		Down();
-		int size = Clients.size();
-		for (int i = 0; i < size; i++) {
-			if (Clients.get(i).getConnectionStatus()){
-				Clients.get(i).disconnect();
-			}
+		for (String key : Clients.keySet()) {
+			ClientSocket client=Clients.get(key);
+			if (client.isConnected())
+				client.disconnect();
 		}
 		Up();
 	}
@@ -103,7 +101,7 @@ public class SyncClientList {
 		Down();
 		String name=client.getClientName();
 		Clients.put(name, client);
-		this.ListeningThreads.put(name, listen);
+		ListeningThreads.put(name, listen);
 		Up();
 	}
 
@@ -111,28 +109,45 @@ public class SyncClientList {
 	 * add a client to be remove 
 	 * @param clientId the client name
 	 */
-	public void addToOldClients(String clientId) {
+	public void addToOldClients(int clientId) {
 			Old_Client.add(clientId);
 			OldClientListEvent.release();
 			
 	}
 	
 	/**
-	 * remove a client from a lisr
+	 * remove a client from a list
 	 */
-	public void RemoveOldClient() {
+	public String RemoveOldClient() {
 		try {
 			OldClientListEvent.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		String name=Old_Client.remove(0);
-		Down();
-		Clients.remove(name);
-		Old_Client.remove(name);
-		Up();
-		 
+		int name=Old_Client.remove(0);
+		String name_ans=removeById(name);
+		return name_ans;
 	}
+	
+	
+	/**
+	 * Disconnect all client and live server socket open
+	 */
+	public String removeById(int id) {
+		Down();
+		for (String key : Clients.keySet()) {
+			ClientSocket client=Clients.get(key);
+			if (client.getClientId()==id){
+				Clients.remove(key);
+				client.disconnect();
+				Up();
+				return client.getClientName();
+			}
+		}
+		Up();
+		return null;
+	}
+	
 	
 	/**
 	 * release access to the client list

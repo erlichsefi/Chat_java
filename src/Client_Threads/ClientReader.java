@@ -28,11 +28,14 @@ public class ClientReader extends Thread {
 
 	}
 
+	
+	
 	/**
 	 * run
 	 */
 	public void run() {		
-		//get in going messages
+		System.out.println("Client reader started");
+
 		while (communication.getConnectionStatus()) {
 			Object m = communication.Response();
 			if (!communication.getConnectionStatus())
@@ -43,6 +46,8 @@ public class ClientReader extends Thread {
 				handleM(s);
 			}
 		}
+		System.out.println("Client reader end");
+
 	}
 
 	@SuppressWarnings("unchecked")

@@ -27,13 +27,22 @@ public class ClientWriter extends Thread{
 	 * run
 	 */
 	public void run() {
+		System.out.println("Client writer started");
+		
 		while (communication.getConnectionStatus()) {
 			message m = communication.getExitMessage();
+			
+			System.out.println(communication.getName()+" send a message : "+m);
+		
 			if (!communication.getConnectionStatus()) {
 				break;
 			}
 			communication.Send(m);
 		}
+		
+		
+		System.out.println("Client writer exit");
+
 		synchronized(this){
 		     notify();
 		}

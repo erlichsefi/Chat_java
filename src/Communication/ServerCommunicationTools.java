@@ -132,7 +132,7 @@ public class ServerCommunicationTools {
 	 * start the server socket
 	 * @return true if successfully, false else
 	 */
-	public boolean Connect() {
+	public boolean ConnectServer() {
 		try {
 			serverSocket = new ServerSocket(Port);
 			ServerRunning=true;
@@ -225,16 +225,18 @@ public class ServerCommunicationTools {
 	public void SetConnectionStatus(boolean status){
 		try {
 			mutextRunning.acquire();
+			putEntry(new message("server","server",Tools.MessageType.RELERSE,null));
+			putExit(new message("server","server",Tools.MessageType.RELERSE,null));
+			Clients.addToOldClients(0);
+		ServerRunning=status;
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		ServerRunning=status;
+		finally{
 		mutextRunning.release();
+		}
 		
 		
-		putEntry(new message("server","server",Tools.MessageType.RELERSE,null));
-		putExit(new message("server","server",Tools.MessageType.RELERSE,null));
-		Clients.addToOldClients("end");
 	}
 
 
@@ -260,8 +262,6 @@ public class ServerCommunicationTools {
 		try {
 			s= serverSocket.accept();
 		} catch (IOException e) {
-			if (!getConnectionStatus())
-				return null;
 			e.printStackTrace();
 		}
 		return s;
@@ -293,15 +293,8 @@ public class ServerCommunicationTools {
 		 */
 		private ObjectOutputStream outputStream = null;
 
-		/**
-		 * queue for all the questions that comes from the user
-		 */
-		//private ServerCommunicationTools Communication;
 		
 		private String name;
-		/**
-		 * a Semaphore to know when there is answers waiting 
-		 */
 		/**
 		 * Semaphore used  as mutex to control 
 		 * the writing to the stream
@@ -315,10 +308,7 @@ public class ServerCommunicationTools {
 		 * a boolean mark to run this thread
 		 */
 		private boolean running;
-		/**
-		 * a value to set if the connection was open or closed
-		 */
-		private boolean IsConnected;
+		
 		/**
 		 * value to check if client disconnected Unannounced
 		 * the last time got a message form the client
@@ -337,9 +327,13 @@ public class ServerCommunicationTools {
 		 * @param id the id
 		 */
 		public ClientSocket(Socket socket, int id) {
+			try {
+				socket.setSoTimeout(2000);
+			} catch (SocketException e) {
+				e.printStackTrace();
+			}
 			connection = socket;
 			ClientId = id;
-			IsConnected = false;
 			ControlOnWriteToStream=new Semaphore(1,true);
 
 		}
@@ -359,10 +353,10 @@ public class ServerCommunicationTools {
 
 		public boolean OpenStream(ArrayList<String> clientlist) {
 			try {
-				IsConnected = true;
 				outputStream = new ObjectOutputStream(connection.getOutputStream());
 				inputStream = new ObjectInputStream(connection.getInputStream());
 				name=((message)inputStream.readObject()).getSrc();
+				
 				if (!clientlist.contains(name)){
 					outputStream.writeObject(new message(name,null,Tools.MessageType.OK,null));
 					outputStream.flush();
@@ -440,7 +434,6 @@ public class ServerCommunicationTools {
 			try {
 				ControlOnWriteToStream.acquire();
 				outputStream.writeObject(m);
-				ControlOnWriteToStream.release();
 				return true;
 			} catch (IOException e) {
 				if (running){
@@ -452,8 +445,37 @@ public class ServerCommunicationTools {
 				e.printStackTrace();
 				return false;
 			}
+			finally{
+				ControlOnWriteToStream.release();
+			}
 		}
 
+		
+		/**
+		 * send a massage to the client
+		 * @param m  the message to be sent
+		 * @return true id the M was sent, else false
+		 */
+		public boolean FastSendMassage(message m) {
+			try {
+				ControlOnWriteToStream.acquire();
+				outputStream.writeObject(m);
+				outputStream.flush();
+				return true;
+			} catch (IOException e) {
+				if (running){
+					e.printStackTrace();
+					return false;
+				}
+				return true;
+			}catch (InterruptedException e) {
+				e.printStackTrace();
+				return false;
+			}
+			finally{
+				ControlOnWriteToStream.release();
+			}
+		}
 		/**
 		 * reading messages from the client
 		 * @return M if got M , null if not
@@ -473,7 +495,6 @@ public class ServerCommunicationTools {
 				}
 				return null;
 			} catch (IOException e) {
-				disconnect();
 				return null;
 
 			}
@@ -490,7 +511,6 @@ public class ServerCommunicationTools {
 				ControlOnWriteToStream.acquire();
 				outputStream.writeObject("Ping");
 				outputStream.flush();
-				ControlOnWriteToStream.release();
 				return true;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -498,6 +518,9 @@ public class ServerCommunicationTools {
 			}catch (IOException e) {
 				e.printStackTrace();
 				return false;
+			}
+			finally{
+				ControlOnWriteToStream.release();
 			}
 
 		}
@@ -511,17 +534,20 @@ public class ServerCommunicationTools {
 		public boolean disconnect() {
 			try {
 				running=false;
+				FastSendMassage(new message("server",name,Tools.MessageType.YOU_HAVE_DISCONNECTED,null));
 				ControlOnWriteToStream.acquire();
+				connection.close();
 				outputStream.close();
 				inputStream.close();
-				connection.close();
-				ControlOnWriteToStream.release();
 				return true;
 			} catch (IOException e) {
 				return false;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				return false;
+			}
+			finally{
+				ControlOnWriteToStream.release();
 			}
 		}
 
@@ -539,7 +565,7 @@ public class ServerCommunicationTools {
 		 * @return true if connected, false else
 		 */
 		public boolean isConnected() {
-			return connection.isConnected() && IsConnected;
+			return running;
 		}
 
 		

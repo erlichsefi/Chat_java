@@ -35,17 +35,26 @@ public class ServerWriter extends Thread {
 	 */
 	public void run() {
 		Communication.AddLog(">start sending messages");
+		System.out.println(">>start sending messages");
+		
 		while (Communication.getConnectionStatus()) {
 			
 			message m = Communication.TakeExit();
 			if (!Communication.getConnectionStatus()) {
 				break;
 			}
-			ServerCommunicationTools.ClientSocket client = Clients.findClient(m.getDst());
 			
+			ServerCommunicationTools.ClientSocket client = Clients.findClient(m.getDst());
+			System.out.println("Server send to id:"+client.getClientId() +" with name "+client.getClientName()+" message"+m);
+
+			if (client != null && client.isConnected()){
 			client.SendMassage(m);
+			}
 
 		}
+		
+		
+		System.out.println(">>ended sending messages");
 		Communication.AddLog(">Stop sending messages");
 		Communication.ServerDisconnect();
 	}

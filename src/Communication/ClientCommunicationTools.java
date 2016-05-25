@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -66,6 +65,8 @@ public class ClientCommunicationTools  {
 	 * the writing to the stream
 	 */
 	private Semaphore ControlOnWriteToStream;
+
+	private Semaphore ISconnectedMutex;
 	/**
 	 * the name of the client
 	 */
@@ -90,9 +91,10 @@ public class ClientCommunicationTools  {
 		ServerPort = Tools.mutual.DefaultServerPort;
 		Console=new ArrayBlockingQueue<String>(Tools.mutual.MaxNumberOfM);
 		ControlOnWriteToStream=new Semaphore(1,true);
+		ISconnectedMutex=new Semaphore(1,true);
 
 	}
-	
+
 	/**
 	 * Constructor
 	 * @param server the server ip
@@ -113,14 +115,24 @@ public class ClientCommunicationTools  {
 
 	}
 
-	
+
 
 	/**
 	 * set the status of the connection
 	 * @param status the new status
 	 */
 	public void SetConnectionStatus(boolean status){
-		IsConnected=status;
+		try {
+			ISconnectedMutex.acquire();
+			IsConnected=status;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		finally{
+			ISconnectedMutex.release();
+
+		}
+
 	}
 
 	/**
@@ -129,30 +141,44 @@ public class ClientCommunicationTools  {
 	 * @return true if connect, false else
 	 */
 	public boolean isConnected() {
-		return connection.isConnected() && IsConnected;
+		boolean status=false;
+		try {
+			ISconnectedMutex.acquire();
+			status=  IsConnected;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		finally{
+			ISconnectedMutex.release();
+
+		}
+		return status;
 	}
 
-	/**
-	 * return if the closed.
-	 * close is: the streams are closed and the output is closed
-	 * @return 	 return if the closed.
-	 */
-	public boolean isTotallyClosed() {
-		return connection.isClosed() && connection.isInputShutdown()
-				&& connection.isOutputShutdown();
-	}
+
 
 	/**
 	 * connect to the server at: ServerIP and ServerPort
 	 * @param name my name
 	 * @return true if connected successfully, false else
+	 * @throws IOException 
 	 */
 
-	public boolean Connect(String name) {
+	public boolean Connect(String name) throws IOException {
 		try {
+
 			MyName=name;
 			connection = new Socket(ServerIp, ServerPort);
-			IsConnected = true;
+			try {
+				ISconnectedMutex.acquire();
+				IsConnected = true;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			finally{
+				ISconnectedMutex.release();
+
+			}
 			outputStream = new ObjectOutputStream(connection.getOutputStream());
 			inputStream = new ObjectInputStream(connection.getInputStream());
 			outputStream.writeObject(new message(MyName,null,Tools.MessageType.LETS_CONNECT,null));
@@ -167,21 +193,14 @@ public class ClientCommunicationTools  {
 				addConsole("NAME TAKEN");
 				return false;
 			}
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			addConsole("SERVER SEEM DOWN");
-			return false;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return false;
-		}
+		} 
 	}
-	
-	
-	
+
+
+
 
 	/**
 	 * 
@@ -192,7 +211,7 @@ public class ClientCommunicationTools  {
 		try {
 			ControlOnWriteToStream.acquire();
 			outputStream.writeObject(m);
-			ControlOnWriteToStream.release();
+			outputStream.flush();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -201,10 +220,33 @@ public class ClientCommunicationTools  {
 			System.err.println(e.getStackTrace());
 			return false;
 		}
+		finally{
+			ControlOnWriteToStream.release();
+
+		}
+
+	}
+	public boolean FastSend(message message) {
+		try {
+			ControlOnWriteToStream.acquire();
+			outputStream.writeObject(message);
+			outputStream.flush();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		} catch (InterruptedException e) {
+			System.err.println(e.getStackTrace());
+			return false;
+		}
+		finally{
+			ControlOnWriteToStream.release();
+
+		}
 
 	}
 
-	
+
 
 	/**
 	 * Close all connections
@@ -212,12 +254,21 @@ public class ClientCommunicationTools  {
 	 */
 	public boolean SendClose() {
 		try {
+			ControlOnWriteToStream.acquire();
 			outputStream.writeObject(new message(MyName,null,Tools.MessageType.LETS_DISCONNECT,null));
 			outputStream.flush();
 			return true;
 		} catch (IOException e) {
-			System.err.println(e.getStackTrace());
+			e.printStackTrace();
 			return false;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return false;
+
+		}
+		finally{
+			ControlOnWriteToStream.release();
+
 		}
 	}
 
@@ -312,7 +363,7 @@ public class ClientCommunicationTools  {
 	public String getName() {
 		return MyName;
 	}
-	
+
 	/**
 	 * Disconnect
 	 * @return
@@ -339,7 +390,18 @@ public class ClientCommunicationTools  {
 	 * @return the status
 	 */
 	public boolean getConnectionStatus() {
-		return this.IsConnected;
+		boolean status=false;
+		try {
+			ISconnectedMutex.acquire();
+			status=  IsConnected;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		finally{
+			ISconnectedMutex.release();
+
+		}
+		return status;
 	}
 	/**
 	 * to string to shoe in the console
@@ -355,7 +417,7 @@ public class ClientCommunicationTools  {
 		return c;
 	}
 
-	
+
 	/**
 	 * add to console
 	 * @param m a String message to show
@@ -370,5 +432,10 @@ public class ClientCommunicationTools  {
 			return false;
 		}		
 	}
+
+	public boolean IsNotEmpty() {
+		return !Console.isEmpty();
+	}
+
 
 }

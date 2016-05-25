@@ -8,6 +8,9 @@ package Gui;
 import Client_Threads.ClientManger;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import java.io.IOException;
+
 import javax.swing.GroupLayout;
 
 /**
@@ -105,7 +108,7 @@ public class Client extends javax.swing.JFrame {
 				jToggleButton3ActionPerformed(evt);
 			}
 		});
-		
+
 		jToggleButton_reset.setText("Reset");
 		jToggleButton_reset.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -155,69 +158,69 @@ public class Client extends javax.swing.JFrame {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		layout.setHorizontalGroup(
-			layout.createParallelGroup(Alignment.LEADING)
+				layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-						.addGroup(layout.createSequentialGroup()
-							.addComponent(jLabel_To)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(dst, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(message_field, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(jButton_send))
-						.addGroup(layout.createSequentialGroup()
-							.addGap(17)
-							.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+						.addContainerGap()
+						.addGroup(layout.createParallelGroup(Alignment.LEADING)
 								.addGroup(layout.createSequentialGroup()
-									.addComponent(jLabel_name)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(my_name, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(jLabel_address)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(ip_ad, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(jToggleButton_showOnline))
-								.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 459, GroupLayout.PREFERRED_SIZE)
-								.addGroup(Alignment.LEADING, layout.createSequentialGroup()
-									.addComponent(jToggleButton_connect, GroupLayout.PREFERRED_SIZE, 123, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(jButton_disconnect, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(jToggleButton_reset, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(jToggleButton_clear, GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)))
-							.addGap(97)))
-					.addContainerGap())
-		);
+										.addComponent(jLabel_To)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(dst, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(message_field, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(jButton_send))
+								.addGroup(layout.createSequentialGroup()
+										.addGap(17)
+										.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+												.addGroup(layout.createSequentialGroup()
+														.addComponent(jLabel_name)
+														.addPreferredGap(ComponentPlacement.UNRELATED)
+														.addComponent(my_name, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+														.addGap(18)
+														.addComponent(jLabel_address)
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(ip_ad, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addComponent(jToggleButton_showOnline))
+												.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 459, GroupLayout.PREFERRED_SIZE)
+												.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+														.addComponent(jToggleButton_connect, GroupLayout.PREFERRED_SIZE, 123, GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(jButton_disconnect, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(jToggleButton_reset, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(jToggleButton_clear, GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)))
+										.addGap(97)))
+						.addContainerGap())
+				);
 		layout.setVerticalGroup(
-			layout.createParallelGroup(Alignment.LEADING)
+				layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(jToggleButton_connect)
-						.addComponent(jButton_disconnect, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jToggleButton_reset)
-						.addComponent(jToggleButton_clear))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(jToggleButton_showOnline)
-						.addComponent(jLabel_name)
-						.addComponent(my_name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jLabel_address)
-						.addComponent(ip_ad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(jLabel_To)
-						.addComponent(dst, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(message_field, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jButton_send))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
+						.addContainerGap()
+						.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jToggleButton_connect)
+								.addComponent(jButton_disconnect, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+								.addComponent(jToggleButton_reset)
+								.addComponent(jToggleButton_clear))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jToggleButton_showOnline)
+								.addComponent(jLabel_name)
+								.addComponent(my_name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(jLabel_address)
+								.addComponent(ip_ad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jLabel_To)
+								.addComponent(dst, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(message_field, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(jButton_send))
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				);
 		getContentPane().setLayout(layout);
 
 		pack();
@@ -244,42 +247,55 @@ public class Client extends javax.swing.JFrame {
 
 	private void Clear(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Clear
 		jTextArea_Main.setText("");
-		}//GEN-LAST:event_Clear
+	}//GEN-LAST:event_Clear
 	private void Reset(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Clear
+		client_f.dissconnect();
 		dispose();
 		Client game = new Client();
-        game.setVisible(true);
-		}//GEN-LAST:event_Reset
+		game.setVisible(true);
+	}//GEN-LAST:event_Reset
 	private void SHOWONLINE(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SHOWONLINE
 		client_f.SendshowOnline();
 	}//GEN-LAST:event_SHOWONLINE
 
 	private void Connect(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Connect
-		client_f=new ClientManger();
-		if (client_f.connect(my_name.getText(),ip_ad.getText())){
-			Thread th=new Thread("log"){
+		
+			client_f=new ClientManger();
+			try {
+				if (client_f.connect(my_name.getText(),ip_ad.getText())){
+					Thread th=new Thread("log"){
 
-				public void run(){
-					String d=client_f.getNextStringToConsole();
-					while(d!=null){
-						jTextArea_Main.append(d);
-						jTextArea_Main.append("\n");
-						d=client_f.getNextStringToConsole();
-					}
+						public void run(){
+							String d=client_f.getNextStringToConsole();
+							while(d!=null || client_f.IsNotEmpty()){
+								jTextArea_Main.append(d);
+								jTextArea_Main.append("\n");
+								d=client_f.getNextStringToConsole();
+							}
+
+						}
+					};
+					th.start();
+
+					jToggleButton_connect.setEnabled(false);
+					jButton_disconnect.setEnabled(true);
+					my_name.setEditable(false);
+					ip_ad.setEditable(false);
+					message_field.setEditable(true);
+					jButton_send.setEnabled(true);
+					dst.setEnabled(true);
+					dst.setEditable(true);
+					jToggleButton_showOnline.setEnabled(true);
+				}
+				else{
+					jTextArea_Main.append("Name Probably TAKEN  \n");
 
 				}
-			};
-			th.start();
-			jToggleButton_connect.setEnabled(false);
-
-			jButton_disconnect.setEnabled(true);
-			my_name.setEditable(false);
-			ip_ad.setEditable(false);
-			message_field.setEditable(true);
-			jButton_send.setEnabled(true);
-			dst.setEditable(true);
-			jToggleButton_showOnline.setEnabled(true);
-		}
+			} catch (IOException e) {
+				jTextArea_Main.append("SERVER SEEMS DOWN \n");
+				//e.printStackTrace();
+			} 
+		
 
 
 	}//GEN-LAST:event_Connect
@@ -295,15 +311,19 @@ public class Client extends javax.swing.JFrame {
 	}//GEN-LAST:event_Send
 
 	private void Disconnect(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Disconnect
-		client_f.dissconnect();
-		jToggleButton_connect.setEnabled(true);
-		jButton_disconnect.setEnabled(false);
-		my_name.setEditable(true);
-		ip_ad.setEditable(true);
-		message_field.setEditable(false);
-		jButton_send.setEnabled(false);
-		dst.setEnabled(false);
-		jToggleButton_showOnline.setEnabled(false);
+		if(client_f.isConnected()){
+			client_f.dissconnect();
+			jToggleButton_connect.setEnabled(true);
+			jButton_disconnect.setEnabled(false);
+			my_name.setEditable(true);
+			ip_ad.setEditable(true);
+			message_field.setEditable(false);
+			jButton_send.setEnabled(false);
+			dst.setEnabled(false);
+			dst.setEditable(false);
+
+			jToggleButton_showOnline.setEnabled(false);
+		}
 
 	}//GEN-LAST:event_Disconnect
 
